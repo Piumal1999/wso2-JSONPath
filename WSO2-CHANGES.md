@@ -33,9 +33,17 @@ tracks upstream, it does not diverge from it.
 ## Versioning and branches
 
 Releases carry the upstream version number with no suffix: `10.4.1` means
-upstream 10.4.1 plus the changes above. Branch `10.4.x` is the 10.4 line;
-`main` is an untouched upstream mirror. When upstream releases 10.4.2, rebase
-`10.4.x` onto `v10.4.2` and publish `10.4.2`.
+upstream 10.4.1 plus the changes above. Branch `10.4.x` is the 10.4 line; `main`
+mirrors upstream and carries no library changes. When upstream releases 10.4.2,
+rebase `10.4.x` onto `v10.4.2` and publish `10.4.2`.
+
+Releases are dispatched from the default branch, which is where
+`.github/workflows/release.yml` lives, naming the release line as an input. It
+checks that branch out, verifies, tags and publishes.
+
+Releases are tagged `v10.4.1`. Upstream tags the same names at different
+commits, so fetch upstream into its own namespace rather than over ours:
+`git fetch oss "refs/tags/*:refs/tags/upstream/*"`.
 
 Since the version carries no WSO2 marker, **every GitHub release must record the
 upstream base tag and commit SHA in its notes** — that is the only record of
